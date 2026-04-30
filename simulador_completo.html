@@ -31,16 +31,20 @@
 
 <section id="clientes">
   <h2>Registro de Clientes</h2>
-
-  <input type="text" >
-  <input type="text" >
-  <input type="text" >
-  <input type="number" >
-  <input type="number" >
+  <h5>Cédula</h5>
+    <input type="text" id="txtCedula" placeholder="Cedula"/>
+  <h5>Nombre</h5>
+    <input type="text" id="txtNombre" placeholder="Nombre"/>
+  <h5>Apellido</h5>
+    <input type="text" id="txtApellido" placeholder="Apellido"/>
+  <h5>Ingresos</h5>
+    <input type="number" id="txtIngresos" placeholder="Ingresos"/>
+  <h5>Egresos</h5>
+    <input type="number" id="txtEgresos" placeholder="Ingresos"/>
 
   <br>
 
-  <button >Guardar cliente</button>
+  <input type="button" value="Guardar cliente" onclick="guardarCliente();" />
   <button >Limpiar</button>
 
   <table>

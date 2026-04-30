@@ -12,7 +12,7 @@
 function ocultarSecciones(){
   let componente= document.getElementById("parametros");
   let listaClass = componente.classList;
-  listaClass.remove("activa");  // oculta
+  listaClass.remove("activa");
 
   let componente2 = document.getElementById("clientes");
   let listaClass2 = componente2.classList;
@@ -37,6 +37,54 @@ function guardarTasa(){
     }
 }
 
+function guardarCliente() {
+  let valorCedula   = recuperaraTexto("txtCedula");
+  let valorNombre   = recuperaraTexto("txtNombre");
+  let valorApellido = recuperaraTexto("txtApellido");
+  let valorIngresos = recuperarFloat("txtIngresos");
+  let valorEgresos  = recuperarFloat("txtEgresos");
+
+  let datoCliente = {};
+    datoCliente.cedula   = valorCedula;
+    datoCliente.nombre   = valorNombre;
+    datoCliente.apellido = valorApellido;
+    datoCliente.ingresos = valorIngresos;
+    datoCliente.egresos  = valorEgresos;
+    
+  let resultado = buscarCliente(datoCliente.cedula);
+    if (resultado == null) {
+        clientes.push(datoCliente);
+        alert("Cliente agregado");
+    } else {
+        resultado.nombre   = datoCliente.nombre;
+        resultado.apellido = datoCliente.apellido;
+        resultado.ingresos = datoCliente.ingresos;
+        resultado.egresos  = datoCliente.egresos;
+        alert("Cliente actualizado");
+    }
+    pintarClientes();
+}
+
+pintarClientes = function() {
+  let cmpTabla = document.getElementById("tablaClientes");
+  let contenidoTabla = "";
+  let elementoCliente;
+    for (let i = 0; i < clientes.length; i++) {
+        elementoCliente = clientes[i];
+        contenidoTabla += `<tr>` +
+            `<td>` + elementoCliente.cedula   + `</td>` +
+            `<td>` + elementoCliente.nombre   + `</td>` +
+            `<td>` + elementoCliente.apellido + `</td>` +
+            `<td>` + elementoCliente.ingresos + `</td>` +
+            `<td>` + elementoCliente.egresos  + `</td>` +
+            `<td>` +
+                `<input type='button' value='Actualizar' onclick="seleccionarCliente('` + elementoCliente.cedula + `');">` +
+                `<input type='button' value='Eliminar'   onclick="eliminarCliente('`   + elementoCliente.cedula + `');">` +
+            `</td>` +
+            `</tr>`;
+    }
+    cmpTabla.innerHTML = contenidoTabla;
+}
 
 { }
 [ ]
