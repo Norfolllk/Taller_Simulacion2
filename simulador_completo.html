@@ -45,7 +45,7 @@
   <br>
 
   <input type="button" value="Guardar cliente" onclick="guardarCliente();" />
-  <button >Limpiar</button>
+  <button onclick="limpiar();">Limpiar</button>
 
   <table>
     <thead>
@@ -66,8 +66,8 @@
           <td>1200</td>
           <td>500</td>
           <td>
-            <button>Actualizar</button>
-            <button>Eliminar</button>
+            <input type='button' value='Actualizar' onclick="seleccionarCliente('1712345678');">
+            <input type='button' value='Eliminar'   onclick="eliminarCliente('1712345678');">
           </td>
         </tr>
         <tr>
@@ -77,8 +77,8 @@
           <td>1500</td>
           <td>600</td>
           <td>
-            <button>Actualizar</button>
-            <button>Eliminar</button>
+            <input type='button' value='Actualizar' onclick="seleccionarCliente('1723456789');"/>
+            <input type='button' value='Eliminar'   onclick="eliminarCliente('1723456789');"/>
           </td>
         </tr>
         <tr>
@@ -88,15 +88,13 @@
           <td>900</td>
           <td>350</td>
           <td>
-            <button>Actualizar</button>
-            <button>Eliminar</button>
+            <input type='button' value='Actualizar' onclick="seleccionarCliente('1734567890');"/>
+            <input type='button' value='Eliminar'   onclick="eliminarCliente('1734567890');"/>
           </td>
         </tr>
     </tbody>
   </table>
 </section>
-
-
 
 <script src="simulador_completo.js"></script>
 <script src="utilitarios.js"></script>
