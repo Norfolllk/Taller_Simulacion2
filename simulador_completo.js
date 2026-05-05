@@ -54,16 +54,24 @@ function guardarCliente() {
     datoCliente.ingresos = valorIngresos;
     datoCliente.egresos  = valorEgresos;
 
-    let resultado = buscarCliente(datoCliente.cedula);
-    if (resultado == null) {
-        clientes.push(datoCliente);
-        alert("Cliente agregado");
-    } else {
-        resultado.nombre   = datoCliente.nombre;
-        resultado.apellido = datoCliente.apellido;
-        resultado.ingresos = datoCliente.ingresos;
-        resultado.egresos  = datoCliente.egresos;
+    if (clienteSeleccionado != null) {
+        clienteSeleccionado.nombre   = datoCliente.nombre;
+        clienteSeleccionado.apellido = datoCliente.apellido;
+        clienteSeleccionado.ingresos = datoCliente.ingresos;
+        clienteSeleccionado.egresos  = datoCliente.egresos;
         alert("Cliente actualizado");
+    } else {
+        let resultado = buscarCliente(datoCliente.cedula);
+        if (resultado == null) {
+            clientes.push(datoCliente);
+            alert("Cliente agregado");
+        } else {
+            resultado.nombre   = datoCliente.nombre;
+            resultado.apellido = datoCliente.apellido;
+            resultado.ingresos = datoCliente.ingresos;
+            resultado.egresos  = datoCliente.egresos;
+            alert("Cliente actualizado");
+        }
     }
     pintarClientes();
     limpiar();
@@ -138,4 +146,5 @@ function limpiar() {
     mostrarTextoEnCaja("txtEgresos",  "");
     clienteSeleccionado = null;
 }
+
 //Para recuperar o mostrar información usar los métodos de la clase utilitarios, puede agregar métodos adicionales en utilitarios
