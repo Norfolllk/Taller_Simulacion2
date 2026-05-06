@@ -7,6 +7,7 @@ let cuotaCalculada = 0;
 let montoCalculado = 0;
 let plazoCalculado = 0;
 let creditoAprobado = false;
+let cliente_existe = "";
 
 clientes.push({cedula: "1712345678", nombre: "Juan",   apellido: "Pérez",   ingresos: 1200, egresos: 500});
 clientes.push({cedula: "1723456789", nombre: "María",  apellido: "Gómez",   ingresos: 1500, egresos: 600});
@@ -145,6 +146,81 @@ function limpiar() {
     mostrarTextoEnCaja("txtIngresos", "");
     mostrarTextoEnCaja("txtEgresos",  "");
     clienteSeleccionado = null;
+}
+
+function buscarClienteCredito() {
+    let cedula = recuperaraTexto("buscarCedulaCredito");
+    let clienteEncontrado = buscarCliente(cedula);
+
+    let cmpDatos = document.getElementById("datosClienteCredito");
+
+    if (clienteEncontrado != null) {
+        clienteSeleccionado = clienteEncontrado;
+        cmpDatos.innerHTML =
+            `<h3>Datos del Cliente</h3>` +
+            `<p><strong>Cédula:</strong> `   + clienteEncontrado.cedula   + `</p>` +
+            `<p><strong>Nombre:</strong> `   + clienteEncontrado.nombre   + `</p>` +
+            `<p><strong>Apellido:</strong> ` + clienteEncontrado.apellido + `</p>` +
+            `<p><strong>Ingresos:</strong> ` + clienteEncontrado.ingresos + `</p>` +
+            `<p><strong>Egresos:</strong> `  + clienteEncontrado.egresos  + `</p>`;
+    } else {
+        cmpDatos.innerHTML = `<p>Cliente no encontrado</p>`;
+        clienteSeleccionado = null;
+    }
+
+    let cmpResultado = document.getElementById("resultadoCredito");
+    cmpResultado.innerHTML = "";
+    cmpResultado.className = "";
+
+    let btnSolicitar = document.getElementById("btnSolicitarCredito");
+    btnSolicitar.disabled = true;
+}
+
+function calcularCredito() {
+    if (clienteSeleccionado == null) {
+        alert("Primero busque un cliente");
+        return;
+    }
+
+    let monto = recuperarFloat("montoCredito");
+    let plazo = recuperarFloat("plazoCredito");
+    let disponible = clienteSeleccionado.ingresos - clienteSeleccionado.egresos;
+    if (disponible < 0) {
+        disponible = 0;
+    }
+    let capacidadPago = disponible / 2;
+    let interes = monto * (tasaInteres / 100) * plazo;
+    const SOLCA = 100;
+    let totalPagar = monto + interes + SOLCA;
+    let plazoMeses = plazo * 12;
+    let cuotaMensual = totalPagar / plazoMeses;
+
+    montoCalculado  = monto;
+    plazoCalculado  = plazo;
+    cuotaCalculada  = cuotaMensual;
+
+    let cmpResultado = document.getElementById("resultadoCredito");
+    let btnSolicitar = document.getElementById("btnSolicitarCredito");
+
+    if (capacidadPago >= cuotaMensual) {
+        creditoAprobado = true;
+        cmpResultado.className = "aprobado";
+        cmpResultado.innerHTML =
+            `Capacidad de pago: ` + capacidadPago.toFixed(2) + `<br>` +
+            `Total a pagar: `     + totalPagar.toFixed(2)    + `<br>` +
+            `Cuota mensual: `     + cuotaMensual.toFixed(2)  + `<br>` +
+            `RESULTADO: APROBADO`;
+        btnSolicitar.disabled = false;
+    } else {
+        creditoAprobado = false;
+        cmpResultado.className = "rechazado";
+        cmpResultado.innerHTML =
+            `Capacidad de pago: ` + capacidadPago.toFixed(2) + `<br>` +
+            `Total a pagar: `     + totalPagar.toFixed(2)    + `<br>` +
+            `Cuota mensual: `     + cuotaMensual.toFixed(2)  + `<br>` +
+            `RESULTADO: RECHAZADO`;
+        btnSolicitar.disabled = true;
+    }
 }
 
 //Para recuperar o mostrar información usar los métodos de la clase utilitarios, puede agregar métodos adicionales en utilitarios
