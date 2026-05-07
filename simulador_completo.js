@@ -13,6 +13,10 @@ clientes.push({cedula: "1712345678", nombre: "Juan",   apellido: "Pérez",   ing
 clientes.push({cedula: "1723456789", nombre: "María",  apellido: "Gómez",   ingresos: 1500, egresos: 600});
 clientes.push({cedula: "1734567890", nombre: "Carlos", apellido: "Ramírez", ingresos: 900,  egresos: 350});
 
+creditos.push({cedula: "1712345678", nombre: "Juan",   apellido: "Pérez",   monto: 3000, tasa: 15, plazo: 1,   cuota: 287.50});
+creditos.push({cedula: "1723456789", nombre: "María",  apellido: "Gómez",   monto: 5000, tasa: 14, plazo: 2,   cuota: 237.50});
+creditos.push({cedula: "1734567890", nombre: "Carlos", apellido: "Ramírez", monto: 1500, tasa: 16, plazo: 0.5, cuota: 290.00});
+
 function ocultarSecciones(){
     let componente = document.getElementById("parametros");
     let listaClass = componente.classList;
@@ -21,6 +25,14 @@ function ocultarSecciones(){
     let componente2 = document.getElementById("clientes");
     let listaClass2 = componente2.classList;
     listaClass2.remove("activa");
+
+    let componente3 = document.getElementById("credito");
+    let listaClass3 = componente3.classList;
+    listaClass3.remove("activa");
+
+    let componente4 = document.getElementById("listaCreditos");
+    let listaClass4 = componente4.classList;
+    listaClass4.remove("activa");
 }
 
 function mostrarSeccion(id){
@@ -151,7 +163,6 @@ function limpiar() {
 function buscarClienteCredito() {
     let cedula = recuperaraTexto("buscarCedulaCredito");
     let clienteEncontrado = buscarCliente(cedula);
-
     let cmpDatos = document.getElementById("datosClienteCredito");
 
     if (clienteEncontrado != null) {
@@ -221,6 +232,58 @@ function calcularCredito() {
             `RESULTADO: RECHAZADO`;
         btnSolicitar.disabled = true;
     }
+}
+
+function solicitarCredito() {
+    let credito = {
+        cedula:   clienteSeleccionado.cedula,
+        nombre:   clienteSeleccionado.nombre,
+        apellido: clienteSeleccionado.apellido,
+        monto:    montoCalculado,
+        tasa:     tasaInteres,
+        plazo:    plazoCalculado,
+        cuota:    cuotaCalculada
+    };
+    creditos.push(credito);
+    alert("Crédito asignado correctamente");
+}
+
+function buscarCreditos(cedula) {
+    let creditosEncontrados = [];
+    let elementoCredito;
+    for (let i = 0; i < creditos.length; i++) {
+        elementoCredito = creditos[i];
+        if (elementoCredito.cedula == cedula) {
+            creditosEncontrados.push(elementoCredito);
+        }
+    }
+    return creditosEncontrados; 
+}
+
+function pintarCreditos(listadoCreditos) {
+    let cmpTabla = document.getElementById("tablaCreditos");
+    let contenidoTabla = "";
+    let elementoCredito;
+    for (let i = 0; i < listadoCreditos.length; i++) {
+        elementoCredito = listadoCreditos[i];
+        contenidoTabla += `<tr>` +
+            `<td>` + elementoCredito.cedula              + `</td>` +
+            `<td>` + elementoCredito.nombre              + `</td>` +
+            `<td>` + elementoCredito.apellido            + `</td>` +
+            `<td>` + elementoCredito.monto.toFixed(2)    + `</td>` +
+            `<td>` + elementoCredito.tasa                + `%</td>` +
+            `<td>` + elementoCredito.plazo               + ` años</td>` +
+            `<td>` + elementoCredito.cuota.toFixed(2)    + `</td>` +
+            `<td><input type='button' value='Eliminar' onclick="eliminarCredito(` + i + `);">` + `</td>` +
+            `</tr>`;
+    }
+    cmpTabla.innerHTML = contenidoTabla;
+}
+
+function buscarCreditosCliente() {
+    let cedula = recuperaraTexto("buscarCedulaListado");
+    let creditosEncontrados = buscarCreditos(cedula);
+    pintarCreditos(creditosEncontrados);
 }
 
 //Para recuperar o mostrar información usar los métodos de la clase utilitarios, puede agregar métodos adicionales en utilitarios
